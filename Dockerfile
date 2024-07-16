@@ -1,9 +1,5 @@
 FROM golang:1.22
 
-RUN cd /tmp
-RUN mkdir duckdb_tmp
-RUN mkdir duckdb
-
 # Set the Current Working Directory inside the container
 WORKDIR /app
 

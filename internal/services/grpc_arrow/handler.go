@@ -228,7 +228,7 @@ func (t dataTransform) TransformAndStreamParquet(in *pb.QueryIn, stream pb.DataT
 
 	log.Println("Querying the view")
 	exportPath := path.Join(config.TEMP_DOWNLOAD_DIR, fmt.Sprintf("%d.parquet", time.Now().Unix()))
-	_, err = t.qb.Query(fmt.Sprintf("COPY %s TO '%s' (ENCRYPTION_CONFIG {footer_key: 'key256'}, FORMAT PARQUET);", viewName, exportPath))
+	_, err = t.qb.Query(fmt.Sprintf("COPY %s TO '%s' (ENCRYPTION_CONFIG {footer_key: 'key256'}, FORMAT PARQUET, COMPRESSION 'gzip');", viewName, exportPath))
 	if err != nil {
 		log.Printf("Error writing data to parquet, err: %s\n", err.Error())
 		return err
@@ -322,7 +322,7 @@ func (t dataTransform) LocalTransformAndStreamArrow(in *pb.QueryIn, stream pb.Da
 	}
 
 	log.Println("Creating view for the transformation query")
-	if err := t.qb.Exec(utilsQuery.CreateView(viewName, tableName)); err != nil {
+	if err := t.qb.Exec(utilsQuery.CreateViewV2(viewName, in.Query)); err != nil {
 		log.Printf("error creating view, err: %v\n", err)
 		return err
 	}
@@ -334,7 +334,6 @@ func (t dataTransform) LocalTransformAndStreamArrow(in *pb.QueryIn, stream pb.Da
 		return err
 	}
 
-	// limit, offset := config.GRPC_ARROW.ChunkSize, 0
 	limit := config.CHUNK_SIZE
 	sequencyNumber := 1
 	log.Println("Chunking the query result")
@@ -426,7 +425,7 @@ func (t dataTransform) LocalTransformAndStreamParquet(in *pb.QueryIn, stream pb.
 
 	log.Println("Querying the view")
 	exportPath := path.Join(config.TEMP_DOWNLOAD_DIR, fmt.Sprintf("%d.parquet", time.Now().Unix()))
-	_, err = t.qb.Query(fmt.Sprintf("COPY %s TO '%s' (ENCRYPTION_CONFIG {footer_key: 'key256'}, FORMAT PARQUET);", viewName, exportPath))
+	_, err = t.qb.Query(fmt.Sprintf("COPY %s TO '%s' (ENCRYPTION_CONFIG {footer_key: 'key256'}, FORMAT PARQUET, COMPRESSION 'gzip');", viewName, exportPath))
 	if err != nil {
 		log.Printf("Error writing data to parquet, err: %s\n", err.Error())
 		return err
