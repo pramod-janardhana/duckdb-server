@@ -1,0 +1,10 @@
+TEMP_DOWNLOAD_DIR=/tmp/tmpdir
+TEMP_PROF_DIR=/tmp/prof
+DUCKDB_DIR=/tmp/duckdb
+TEMP_DUCKDB_DIR=/tmp/duckdb_tmp
+
+CHUNK_SIZE=50000
+FILE_CHUNK_SIZE=31457280
+
+PORT=9006
+HOST=localhost

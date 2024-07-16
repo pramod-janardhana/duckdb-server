@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package data_transform;
+
+option go_package = "go-duckdb/data_transform";
+import "google/protobuf/empty.proto";
+
+message Row {
+    repeated string values = 1;
+}
+
+message Columns {
+    repeated string name = 1;
+}
+
+message Data {
+    Columns columns = 1;
+    repeated Row rows = 2;
+}
+
+message QueryOut {
+    int32 sequency_number = 1;
+    int32 count = 2;
+    Data data = 3;
+}
+
+
+// Interface exported by the server.
+service DataTransform {
+  // A server-to-client streaming RPC.
+  rpc Transform(google.protobuf.Empty) returns (stream QueryOut) {}
+}

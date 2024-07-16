@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package data_transform_arrow;
+
+option go_package = "go-duckdb/data_transform_arrow";
+
+message QueryOut {
+    int32 sequency_number = 1;
+    int32 count = 2;
+    repeated bytes data = 3;
+}
+
+message QueryIn {
+    string path = 1;
+    string query = 2;
+}
+
+// Interface exported by the server.
+service DataTransform {
+  // A server-to-client streaming RPC.
+  rpc TransformAndStreamArrow(QueryIn) returns (stream QueryOut) {}
+  rpc TransformAndStreamParquet(QueryIn) returns (stream QueryOut) {}
+  rpc LocalTransformAndStreamArrow(QueryIn) returns (stream QueryOut) {}
+  rpc LocalTransformAndStreamParquet(QueryIn) returns (stream QueryOut) {}
+}
