@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package backend_data_transform;
+
+option go_package = "duckdb-server/backend_data_transform";
+
+message LoadRequests {
+    string jobId = 1;
+    string tableName = 2;
+    string filePath = 3;
+}
+
+message LoadResponse {
+    string jobId = 1;
+}
+
+message QueryArrowRequests {
+    string jobId = 1;
+    string query = 2;
+}
+
+message QueryArrowResponse {
+    int32 sequency_number = 1;
+    int32 count = 2;
+    repeated bytes data = 3;
+}
+
+message WriteToParquetRequests {
+    string jobId = 1;
+    string query = 2;
+    string fileExportPath = 3;
+}
+
+message WriteToParquetResponse {
+}
+
+message ClearRequest {
+    string jobId = 1;
+}
+
+message ClearResponse {
+}
+
+// Interface exported by the server.
+service DataTransform {
+  rpc Load(LoadRequests) returns (LoadResponse) {}
+  rpc QueryArrow(QueryArrowRequests) returns (stream QueryArrowResponse) {}
+  rpc WriteToParquet(WriteToParquetRequests) returns (WriteToParquetResponse) {}
+  rpc Clear(ClearRequest) returns (ClearResponse) {}
+}

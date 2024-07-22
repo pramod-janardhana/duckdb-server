@@ -9,6 +9,8 @@
 /prof
 /duckdb
 /temp
+/.vscode
+.env
 
 # User-specific stuff
 .idea/**/workspace.xml

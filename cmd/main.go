@@ -2,7 +2,9 @@ package main
 
 import (
 	"duckdb-server/config"
-	grpcArrow "duckdb-server/internal/services/grpc_arrow"
+	"duckdb-server/internal/services/backend"
+
+	// grpcArrow "duckdb-server/internal/services/grpc_arrow"
 	"log"
 	"sync"
 
@@ -35,10 +37,10 @@ func main() {
 			port = config.PORT
 		)
 
-		go grpcArrow.InitServer(host, port)
+		go backend.InitServer(host, port)
 	}
 
 	wg := &sync.WaitGroup{}
-	wg.Add(2)
+	wg.Add(1)
 	wg.Wait()
 }
