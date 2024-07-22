@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package turing.ui.data_transform;
+
+option go_package = "turing.ui.data_transform";
+
+message LoadAndQueryArrowRequest {
+    string tableName = 1;
+    string query = 2;
+    string filePath = 3;
+}
+
+message LoadAndQueryArrowResponse {
+    int32 sequency_number = 1;
+    int32 count = 2;
+    repeated bytes data = 3;
+}
+
+// Interface exported by the server.
+service DataTransform {
+  rpc LoadAndQueryArrow(LoadAndQueryArrowRequest) returns (stream LoadAndQueryArrowResponse) {}
+}

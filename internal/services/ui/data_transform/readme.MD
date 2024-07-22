@@ -3,4 +3,4 @@
 # Run the below command to generate client and server code
 protoc --go_out=. --go_opt=paths=source_relative \
  --go-grpc_out=. --go-grpc_opt=paths=source_relative \
-internal/services/backend/data_transform/data_transform.proto
+ data_transform_ui.proto

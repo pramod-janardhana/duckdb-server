@@ -31,7 +31,7 @@ func NewDuckDBQueryBuilder(path string) (*DuckDBQueryBuilder, error) {
 
 	db.Exec("PRAGMA memory_limit='2GB'")
 	db.Exec("SET temp_directory='/tmp/duckdb_tmp'")
-	db.Exec("SET threads TO 4")
+	// db.Exec("SET threads TO 4")
 	// db.Exec("SET max_temp_directory_size='8GB'")
 	// db.Exec("SET default_block_size=2621440")
 	// db.Exec("SET enable_progress_bar = true")
@@ -42,7 +42,11 @@ func NewDuckDBQueryBuilder(path string) (*DuckDBQueryBuilder, error) {
 }
 
 func (qb DuckDBQueryBuilder) CSVToTable(tableName, filePath string) error {
-	return qb.Exec(fmt.Sprintf(`CREATE OR REPLACE TABLE %s AS SELECT * FROM read_csv('%s');`, tableName, filePath))
+	return qb.Exec(fmt.Sprintf(`CREATE TABLE %s AS SELECT * FROM read_csv('%s');`, tableName, filePath))
+}
+
+func (qb DuckDBQueryBuilder) ParquetToTable(tableName, filePath string) error {
+	return qb.Exec(fmt.Sprintf(`CREATE TABLE %s AS SELECT * FROM read_parquet('%s');`, tableName, filePath))
 }
 
 func (qb DuckDBQueryBuilder) Exec(query string) error {
